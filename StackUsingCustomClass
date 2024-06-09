@@ -1,46 +1,67 @@
-class Stack:
-    def __init__(self):
-        self.items = []
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
 
-    def push(self, item):
-        self.items.append(item)
+public class CustomQueue {
+    private Queue<String> queue;
 
-    def pop(self):
-        if not self.is_empty():
-            return self.items.pop()
-        else:
-            raise IndexError("pop from empty stack")
+    public CustomQueue() {
+        queue = new LinkedList<>();
+    }
 
-    def is_empty(self):
-        return len(self.items) == 0
+    public void enqueue(String item) {
+        queue.add(item);
+    }
 
-    def peek(self):
-        if not self.is_empty():
-            return self.items[-1]
-        else:
-            raise IndexError("peek from empty stack")
+    public String dequeue() {
+        if (!queue.isEmpty()) {
+            return queue.poll();
+        } else {
+            throw new RuntimeException("dequeue from empty queue");
+        }
+    }
 
-# Usage of custom Stack class with user inputs
-stack = Stack()
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
 
-while True:
-    action = input("Enter 'push' to add an element, 'pop' to remove an element, or 'quit' to exit: ").strip().lower()
+    public String peek() {
+        if (!queue.isEmpty()) {
+            return queue.peek();
+        } else {
+            throw new RuntimeException("peek from empty queue");
+        }
+    }
 
-    if action == 'push':
-        item = input("Enter the element to push onto the stack: ")
-        stack.push(item)
-        print(f"Pushed {item} onto the stack.")
-    elif action == 'pop':
-        try:
-            item = stack.pop()
-            print(f"Popped {item} from the stack.")
-        except IndexError as e:
-            print(e)
-    elif action == 'quit':
-        print("Exiting.")
-        break
-    else:
-        print("Invalid action. Please enter 'push', 'pop', or 'quit'.")
+    public static void main(String[] args) {
+        CustomQueue customQueue = new CustomQueue();
+        Scanner scanner = new Scanner(System.in);
 
-# Print the final state of the stack
-print("Final stack:", stack.items)
+        while (true) {
+            System.out.print("Enter 'enqueue' to add an element, 'dequeue' to remove an element, or 'quit' to exit: ");
+            String action = scanner.nextLine().trim().toLowerCase();
+
+            if (action.equals("enqueue")) {
+                System.out.print("Enter the element to enqueue into the queue: ");
+                String item = scanner.nextLine();
+                customQueue.enqueue(item);
+                System.out.println("Enqueued " + item + " into the queue.");
+            } else if (action.equals("dequeue")) {
+                try {
+                    String item = customQueue.dequeue();
+                    System.out.println("Dequeued " + item + " from the queue.");
+                } catch (RuntimeException e) {
+                    System.out.println(e.getMessage());
+                }
+            } else if (action.equals("quit")) {
+                System.out.println("Exiting.");
+                break;
+            } else {
+                System.out.println("Invalid action. Please enter 'enqueue', 'dequeue', or 'quit'.");
+            }
+        }
+
+        System.out.println("Final queue: " + customQueue.queue);
+        scanner.close();
+    }
+}
