@@ -1,65 +1,78 @@
-package DataStructure;
-
-import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.NoSuchElementException;
 
-public class DequeStack {
-    private Deque<String> deque;
+public class Steque<T> {
+    private LinkedList<T> list;
 
-    public DequeStack() {
-        deque = new LinkedList<>();
+    public Steque() {
+        list = new LinkedList<>();
     }
 
-    public void push(String element) {
-        deque.addFirst(element);
-        System.out.println("Pushed: " + element);
+    // Push operation (adds to the front of the steque)
+    public void push(T item) {
+        list.addFirst(item);
     }
 
-    public void pop() {
-        if (!deque.isEmpty()) {
-            String element = deque.removeFirst();
-            System.out.println("Popped: " + element);
-        } else {
-            System.out.println("DequeStack is empty, cannot pop.");
+    // Enqueue operation (adds to the end of the steque)
+    public void enqueue(T item) {
+        list.addLast(item);
+    }
+
+    // Pop operation (removes from the front of the steque)
+    public T pop() {
+        if (list.isEmpty()) {
+            throw new NoSuchElementException("Pop from an empty steque");
         }
+        return list.removeFirst();
     }
 
-    public void enqueue(String element) {
-        deque.addLast(element);
-        System.out.println("Enqueued: " + element);
+    // Check if the steque is empty
+    public boolean isEmpty() {
+        return list.isEmpty();
     }
 
-    public void display() {
-        System.out.println("Current DequeStack: " + deque);
+    // Get the size of the steque
+    public int size() {
+        return list.size();
+    }
+
+    // Peek at the front item of the steque without removing it
+    public T peek() {
+        if (list.isEmpty()) {
+            throw new NoSuchElementException("Peek from an empty steque");
+        }
+        return list.getFirst();
+    }
+
+    @Override
+    public String toString() {
+        return list.toString();
     }
 
     public static void main(String[] args) {
-        DequeStack dequeStack = new DequeStack();
-        Scanner scanner = new Scanner(System.in);
+        Steque<Integer> steque = new Steque<>();
 
-        while (true) {
-            System.out.print("Enter 'push <element>', 'pop', 'enqueue <element>', or 'exit' to stop: ");
-            String userInput = scanner.nextLine().trim();
+        // Testing the steque operations
+        steque.push(1);
+        steque.push(2);
+        steque.enqueue(3);
+        steque.enqueue(4);
+        System.out.println("Steque after push and enqueue operations: " + steque);
 
-            if (userInput.equalsIgnoreCase("exit")) {
-                break;
-            } else if (userInput.toLowerCase().startsWith("push ")) {
-                String element = userInput.substring(5).trim();
-                dequeStack.push(element);
-            } else if (userInput.equalsIgnoreCase("pop")) {
-                dequeStack.pop();
-            } else if (userInput.toLowerCase().startsWith("enqueue ")) {
-                String element = userInput.substring(8).trim();
-                dequeStack.enqueue(element);
-            } else {
-                System.out.println("Invalid command. Please enter 'push <element>', 'pop', 'enqueue <element>', or 'exit'.");
-            }
+        System.out.println("Pop: " + steque.pop());
+        System.out.println("Steque after pop: " + steque);
 
-            dequeStack.display();
+        System.out.println("Peek: " + steque.peek());
+        System.out.println("Steque after peek: " + steque);
+
+        steque.push(5);
+        steque.enqueue(6);
+        System.out.println("Steque after more operations: " + steque);
+
+        while (!steque.isEmpty()) {
+            System.out.println("Pop: " + steque.pop());
         }
 
-        System.out.println("DequeStack processing complete.");
-        scanner.close();
+        System.out.println("Steque after emptying: " + steque);
     }
 }
